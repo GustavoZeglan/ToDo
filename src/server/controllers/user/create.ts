@@ -3,11 +3,18 @@ import { StatusCodes } from "http-status-codes";
 import { getUserByEmail } from "../../db/user/getUserByEmail";
 import { insertUser } from "../../db/user/insert";
 import { IUser } from "../../models/User";
-
+import { passwordGenerator } from "../../shared/service/paswordGenerator";
 
 export const create: RequestHandler = async (req, res) => {
 
-	const {name,email,password} = req.body;
+	const {name,email} = req.body;
+	let {password} = req.body;
+
+	const hashedPassword = await passwordGenerator(password);
+
+	if (hashedPassword != undefined) {
+		password = hashedPassword;
+	}
 
 	const userData: IUser = {
 		name,

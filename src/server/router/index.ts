@@ -14,6 +14,7 @@ router.get("/", (req, res) => {
 // User routes
 // router.get("/user", UserController.getUsers);
 router.post("/user", validate(Schemas.userSchema.omit({id:true})),UserController.create);
+
 router.post("/user/getEmail", validate(Schemas.userSchema.omit({id:true})), async (req:Request,res:Response) => {
 	const {name,email,password} = req.body;
 
