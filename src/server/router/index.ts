@@ -1,9 +1,9 @@
-import { Request, Response, Router } from "express";
-import { StatusCodes } from "http-status-codes";
+import { Router } from "express";
+import { CollectionController } from "../controllers/collection";
+import { login } from "../controllers/login/login";
 import { UserController } from "../controllers/user";
-import { getUserByEmail } from "../db/user/getUserByEmail";
-import { IUser } from "../models/User";
 import { Schemas } from "../schema";
+import { authentication } from "../shared/middleware/authentication";
 import { validate } from "../shared/middleware/validation";
 const router = Router();
 
@@ -15,23 +15,11 @@ router.get("/", (req, res) => {
 // router.get("/user", UserController.getUsers);
 router.post("/user", validate(Schemas.userSchema.omit({id:true})),UserController.create);
 
-router.post("/user/getEmail", validate(Schemas.userSchema.omit({id:true})), async (req:Request,res:Response) => {
-	const {name,email,password} = req.body;
-
-	const userData: IUser = {
-		name,
-		email,
-		password
-	};
-
-	getUserByEmail(userData);
-
-	res.status(StatusCodes.OK).send("Buscado");
-});
+//login 
+router.post("/login", validate(Schemas.userSchema.omit({id:true})),login);
+router.post("/signup", validate(Schemas.userSchema.omit({id:true})),UserController.create);
 
 // Collection Routes
-router.post("/collection", validate(Schemas.colleactionSchema.omit({collectionId:true})),(req:Request,res:Response) => {
-	res.send("TESTE");
-});
+router.post("/:userId/collection",authentication,validate(Schemas.colleactionSchema.omit({collectionId:true})),CollectionController.create);
 
 export { router };

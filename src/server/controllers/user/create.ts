@@ -17,6 +17,7 @@ export const create: RequestHandler = async (req, res) => {
 	}
 
 	const userData: IUser = {
+		id:0,
 		name,
 		email,
 		password
