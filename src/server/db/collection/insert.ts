@@ -10,7 +10,7 @@ export const insert = async (collection: ICollection) => {
 
 	try {
 
-		await connection.query("INSERT INTO collection (userId,collectionName,image,color) VALUES(?,?,?,?)", 
+		await connection.query("call add_collection(?,?,?,?)", 
 			[collection.userId, collection.collectionName, collection.image, collection.color]);
 
 		console.log("Collection inserida");

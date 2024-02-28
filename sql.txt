@@ -1,0 +1,105 @@
+-- Active: 1698886053588@@127.0.0.1@3306
+
+create database todo;
+
+use ToDo;
+
+# TABLES
+
+create table user (
+   id INT PRIMARY KEY AUTO_INCREMENT,
+   name VARCHAR(50) NOT NULL,
+   email VARCHAR(30) NOT NULL,
+   password VARCHAR(255) NOT NULL
+);
+
+create table collection (
+   collectionId INT PRIMARY KEY AUTO_INCREMENT,
+   userId INT,
+   name VARCHAR(20) NOT NULL,
+   image VARCHAR(255),
+   color VARCHAR(12) NOT NULL,
+   FOREIGN KEY (userId) REFERENCES user(id)
+);
+
+create table task (
+   taskId INT PRIMARY KEY AUTO_INCREMENT,
+   collectionId INT,
+   name VARCHAR(20) NOT NULL,
+   isDone BOOLEAN NOT NULL,
+   description VARCHAR(255),
+   FOREIGN KEY (collectionId) REFERENCES collection(collectionId)
+);
+
+# LOG TABLES
+
+create table user_log (
+   id INT PRIMARY KEY AUTO_INCREMENT,
+   oldUserId int NOT NULL,
+   name VARCHAR(50) NOT NULL,
+   email VARCHAR(30) NOT NULL,
+   password VARCHAR(255) NOT NULL,
+   deletionTime DATE NOT NULL,
+   method VARCHAR(6) NOT NULL
+);
+
+create table collection_log (
+   id INT PRIMARY KEY AUTO_INCREMENT,
+   oldCollectionId int NOT NULL,
+   userId int NOT NULL,
+   collectionName VARCHAR(20) NOT NULL,
+   image VARCHAR(255),
+   color VARCHAR(12) NOT NULL,
+   deletionTime DATE NOT NULL,
+   method VARCHAR(6) NOT NULL
+);
+
+# PROCEDURES
+
+   --  insert
+create or replace 
+procedure add_user(in username varchar(50), in email varchar(30), in password varchar(255))
+begin 
+   insert into user (name,email,password) values(username,email,password);
+end
+
+create or replace 
+procedure add_collection(in userId int, in name varchar(20), in image varchar(255), in color VARCHAR(12))
+begin 
+   insert into collection(userId,name,image,color) values(userId,name,image,color);
+end
+
+create or replace 
+procedure add_task(in collectionId int, in name varchar(20), in description VARCHAR(255))
+begin 
+   insert into task (collectionId,name,isDone,description) values(collectionId,name,false,description);
+end
+
+   -- update  
+
+create or replace procedure update_task(in taskId int, in taskName varchar(20), in description varchar(255), in isDone boolean)  
+begin
+   update task set name = taskName, description = description, isDone = isDone where id = taskId;
+end
+
+# TRIGGERS
+
+create or replace trigger deleted_user after delete
+on user
+for each row 
+begin  
+   insert into user_log values(null,old.id,old.name,old.email,old.password,now(),"DELETE");
+end
+
+create or replace trigger deleted_collection before delete
+on collection
+for each row 
+begin
+   insert into collection_log values(null,old.collectionId,old.userId,old.collectionName,old.image,old.color,now(),"DELETE");
+end
+
+drop trigger deleted_collection
+
+delete from user where id = 5;
+
+delete from collection where userId = 5;

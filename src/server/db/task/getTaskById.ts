@@ -1,20 +1,20 @@
 import mysql from "mysql2/promise";
-import { IUser } from "../../models/User";
+import { ITask } from "../../models/Task";
 import { databaseConfig } from "../connection";
 
-export const getUserByEmail = async (userData: IUser) => {
+export const getTaskById = async (taskId: string) => {
 	
 	const pool = mysql.createPool(databaseConfig);
 	const connection = await pool.getConnection();
 	
 	try {
 		
-		const [rows] = await connection.query("SELECT * FROM user where email = (?)",[userData.email]);
+		const [rows] = await connection.query("SELECT * FROM task where taskId = (?)",[taskId]);
 
-		const user: IUser[] = rows as IUser[];
+		const collec: ITask[] = rows as ITask[];
 
-		if (user != null) {
-			return user[0];
+		if (collec != null) {
+			return collec[0];
 		}
 
 	} catch (err) {

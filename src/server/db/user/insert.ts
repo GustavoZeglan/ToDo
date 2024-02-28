@@ -11,7 +11,7 @@ export const insertUser = async (userData: IUser) => {
 
 	try {
 		// Executar uma consulta SQL
-		await connection.query("INSERT INTO user (name,email,password) VALUES(?,?,?);",[userData.name,userData.email,userData.password]);
+		await connection.query("call add_user(?,?,?);",[userData.name,userData.email,userData.password]);
 		console.log("Usuário inserido");
 	} catch (error) {
 		console.error("Erro ao executar a consulta:", error);
