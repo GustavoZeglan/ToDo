@@ -1,17 +1,14 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { Task } from "../../db/entity/Task";
-import { getTaskById } from "../../db/task/getTaskById";
-import { update } from "../../db/task/update";
+import { verifyUserCollection } from "../../db/VerifyUserCollection";
+import { getCollectionById } from "../../db/collection/getCollectionById";
+import { getTaskByCollection } from "../../db/task/getTasksByCollection";
 import { getUserById } from "../../db/user/getUserById";
-import { verifyUserTask } from "../../db/verifyUserTask";
 
+export const getByCollectionId:RequestHandler = async (req,res) => {
 
-export const updateTask: RequestHandler = async (req,res) => {
-
-	const {name,description,isDone} = req.body;
-	const taskId = Number(req.params.id); 
+	const collectionId = Number(req.params.collectionId);
 	const userId = Number(req.params.userId);
 
 	if (!req.headers.authorization) {
@@ -34,25 +31,23 @@ export const updateTask: RequestHandler = async (req,res) => {
 		return res.status(StatusCodes.BAD_REQUEST).json({ error: "O usuário informado não existe"});
 	}
 
-	const getedTask = await getTaskById(taskId);
+	const collection = await getCollectionById(collectionId);
 
-	if (!getedTask) {
+	if (!collection) {
 		return res.status(StatusCodes.BAD_REQUEST).json({ error: "A tarefa informada não existe"});
 	}
 
-	const taskBelongsToUser = await verifyUserTask(userId,taskId);
+	const collectionBelongsToUser = await verifyUserCollection(userId,collectionId);
 
-	if (!taskBelongsToUser) {
-		return res.status(StatusCodes.BAD_REQUEST).json({ error: "A tarefa não pertence ao usuário informado"});
+	if (!collectionBelongsToUser) {
+		return res.status(StatusCodes.BAD_REQUEST).json({ error: "A coleção não pertence ao usuário informado"});
 	}
 
-	const task: Task = new Task(); 
+	const tasks = await getTaskByCollection(collection);
 
-	task.name = name;
-	task.description = description;
-	task.isDone = isDone;
+	if (!tasks) {
+		return res.status(StatusCodes.BAD_REQUEST).json({ error: "Sem tarefas cadastradas nessa coleção"});
+	}
 
-	await update(taskId,task);
-	return res.status(StatusCodes.OK).json(req.body);
-
+	return res.status(StatusCodes.OK).json({tasks:tasks});
 };

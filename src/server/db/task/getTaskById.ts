@@ -1,26 +1,20 @@
-import mysql from "mysql2/promise";
-import { ITask } from "../../models/Task";
-import { databaseConfig } from "../connection";
+import { AppDataSource } from "../connection";
+import { Task } from "../entity/Task";
 
-export const getTaskById = async (taskId: string) => {
+
+export const getTaskById = async (taskId: number): Promise<Task | void> => {
 	
-	const pool = mysql.createPool(databaseConfig);
-	const connection = await pool.getConnection();
-	
+
 	try {
-		
-		const [rows] = await connection.query("SELECT * FROM task where taskId = (?)",[taskId]);
+	
+		const taskRepository = AppDataSource.getRepository(Task);
+		const task = await taskRepository.findOneBy({id:taskId});
 
-		const collec: ITask[] = rows as ITask[];
-
-		if (collec != null) {
-			return collec[0];
+		if (task != null) {
+			return task;
 		}
 
 	} catch (err) {
 		console.error("Erro ao executar consulta:",err);
-	} finally {
-		connection.release();
-	}
-
+	} 
 } ;

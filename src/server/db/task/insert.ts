@@ -1,19 +1,14 @@
-import mysql from "mysql2/promise";
-import { ITask } from "../../models/Task";
-import { databaseConfig } from "../connection";
+import { AppDataSource } from "../connection";
+import { Task } from "../entity/Task";
 
 
-export const insert = async (task: ITask) => {
+export const insert = async (task: Task): Promise<void> => {
 
-	const pool = mysql.createPool(databaseConfig);
-	const connection = await pool.getConnection();
 
 	try {
-		await connection.query("call add_task(?,?,?)",[task.collectionId,task.name,task.description]);
+		const taskRepository = AppDataSource.getRepository(Task);
+		await taskRepository.save(task);
 	} catch (err) {
 		console.error(err);
-	} finally {
-		connection.release();
-	}
-
+	} 
 };

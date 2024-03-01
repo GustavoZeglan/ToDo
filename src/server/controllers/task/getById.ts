@@ -1,16 +1,12 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { Task } from "../../db/entity/Task";
 import { getTaskById } from "../../db/task/getTaskById";
-import { update } from "../../db/task/update";
 import { getUserById } from "../../db/user/getUserById";
 import { verifyUserTask } from "../../db/verifyUserTask";
 
+export const getById:RequestHandler = async (req,res) => {
 
-export const updateTask: RequestHandler = async (req,res) => {
-
-	const {name,description,isDone} = req.body;
 	const taskId = Number(req.params.id); 
 	const userId = Number(req.params.userId);
 
@@ -34,9 +30,9 @@ export const updateTask: RequestHandler = async (req,res) => {
 		return res.status(StatusCodes.BAD_REQUEST).json({ error: "O usuário informado não existe"});
 	}
 
-	const getedTask = await getTaskById(taskId);
+	const task = await getTaskById(taskId);
 
-	if (!getedTask) {
+	if (!task) {
 		return res.status(StatusCodes.BAD_REQUEST).json({ error: "A tarefa informada não existe"});
 	}
 
@@ -46,13 +42,5 @@ export const updateTask: RequestHandler = async (req,res) => {
 		return res.status(StatusCodes.BAD_REQUEST).json({ error: "A tarefa não pertence ao usuário informado"});
 	}
 
-	const task: Task = new Task(); 
-
-	task.name = name;
-	task.description = description;
-	task.isDone = isDone;
-
-	await update(taskId,task);
-	return res.status(StatusCodes.OK).json(req.body);
-
+	return res.status(StatusCodes.OK).json(task);
 };

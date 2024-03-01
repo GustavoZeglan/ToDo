@@ -1,26 +1,19 @@
-import mysql from "mysql2/promise";
-import { ICollection } from "../../models/Collection";
-import { databaseConfig } from "../connection";
+import { AppDataSource } from "../connection";
+import { Collection } from "../entity/Collection";
 
-export const getCollectionById = async (collectionId: string) => {
-	
-	const pool = mysql.createPool(databaseConfig);
-	const connection = await pool.getConnection();
+export const getCollectionById = async (collectionId: number): Promise<Collection | void> => {
 	
 	try {
-		
-		const [rows] = await connection.query("SELECT * FROM collection where collectionId = (?)",[collectionId]);
+	
+		const collectionRepository = AppDataSource.getRepository(Collection);
+		const collection = await collectionRepository.findOneBy({id:collectionId});
 
-		const collec: ICollection[] = rows as ICollection[];
-
-		if (collec != null) {
-			return collec[0];
+		if (collection != null) {
+			return collection;
 		}
 
 	} catch (err) {
 		console.error("Erro ao executar consulta:",err);
-	} finally {
-		connection.release();
-	}
+	} 
 
 } ;

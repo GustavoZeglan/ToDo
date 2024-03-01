@@ -26,6 +26,9 @@ router.post("/:userId/collection",
 	validate(Schemas.colleactionSchema.omit({ collectionId: true })), CollectionController.create);
 
 // Task Routes
+router.get("/:userId/task/:id",authentication,TaskController.getById);
+router.get("/:userId/:collectionId/task",authentication,TaskController.getByCollectionId);
+
 router.post("/:userId/:collectionId/task"
 	, authentication
 	, validate(Schemas.TaskSchema.omit({ taskId: true, isDone: true })), TaskController.create);

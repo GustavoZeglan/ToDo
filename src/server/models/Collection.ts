@@ -1,7 +1,7 @@
 
 export interface ICollection {
-	id?: string;
-	userId: string;
+	id?: number;
+	userId: number;
 	collectionName: string;
 	image?: string; 
 	color: string;

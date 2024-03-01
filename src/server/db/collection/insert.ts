@@ -1,24 +1,15 @@
-import mysql from "mysql2/promise";
-import { ICollection } from "../../models/Collection";
-import { databaseConfig } from "../connection";
+import { AppDataSource } from "../connection";
+import { Collection } from "../entity/Collection";
 
-export const insert = async (collection: ICollection) => {
-
-	const pool = mysql.createPool(databaseConfig);
-
-	const connection = await pool.getConnection();
+export const insert = async (collection: Collection): Promise<void> => {
 
 	try {
 
-		await connection.query("call add_collection(?,?,?,?)", 
-			[collection.userId, collection.collectionName, collection.image, collection.color]);
-
-		console.log("Collection inserida");
+		const collectionRepository = AppDataSource.getRepository(Collection);
+		await collectionRepository.save(collection);
 
 	} catch (err) {
 		console.error("Erro ao executar a consulta:", err);
-	} finally {
-		connection.release();
 	}
 
 };

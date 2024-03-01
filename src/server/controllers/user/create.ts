@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
+import { User } from "../../db/entity/User";
 import { getUserByEmail } from "../../db/user/getUserByEmail";
 import { insertUser } from "../../db/user/insert";
-import { IUser } from "../../models/User";
 import { passwordGenerator } from "../../shared/service/paswordGenerator";
 
 export const create: RequestHandler = async (req, res) => {
@@ -16,14 +16,14 @@ export const create: RequestHandler = async (req, res) => {
 		password = hashedPassword;
 	}
 
-	const userData: IUser = {
-		id:0,
-		name,
-		email,
-		password
-	};
 
-	const user = await getUserByEmail(userData);
+	const userData: User = new User();
+
+	userData.name = name;
+	userData.email = email;
+	userData.password = password;
+
+	const user = await getUserByEmail(email);
 
 	if (userData.email === user?.email) {
 		return res.status(StatusCodes.BAD_REQUEST).json({ error: "Erro de validação", details: "Usuário já cadastrado"});
