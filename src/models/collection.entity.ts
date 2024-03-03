@@ -24,7 +24,10 @@ export class Collection {
   @Column()
   color: string;
 
-  @OneToMany(() => Task, (task) => task.collection)
+  @OneToMany(() => Task, (task) => task.collection, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   tasks: Task[];
 
   @ManyToOne(() => User, (user) => user.collections)

@@ -25,8 +25,8 @@ export class CollectionModule implements NestModule {
         ZodValidationMiddleware(colleactionSchema.omit({ collectionId: true })),
       )
       .forRoutes(
-        { path: '*collection', method: RequestMethod.POST },
-        { path: '*collection', method: RequestMethod.PUT },
+        { path: '*collection*', method: RequestMethod.POST },
+        { path: '*collection*', method: RequestMethod.PUT },
       );
   }
 }

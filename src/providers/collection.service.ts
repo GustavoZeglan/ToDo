@@ -19,6 +19,10 @@ export class CollectionsService {
     return this.collectionRepository.findOneBy({ user: user });
   }
 
+  findManyByUser(user: User): Promise<Array<Collection> | null> {
+    return this.collectionRepository.findBy({ user: user });
+  }
+
   async verifyUserCollection(
     user: User,
     collection: Collection,
@@ -35,5 +39,17 @@ export class CollectionsService {
 
   insert(collection: Collection): Promise<Collection | null> {
     return this.collectionRepository.save(collection);
+  }
+
+  async update(id: number, collection: Collection): Promise<void> {
+    await this.collectionRepository.update(id, collection);
+  }
+
+  async deleteCollectionWithTasks(collection: Collection): Promise<void> {
+    try {
+      await this.collectionRepository.remove(collection);
+    } catch (err) {
+      console.error(err);
+    }
   }
 }

@@ -69,7 +69,7 @@ export class TaskController {
     }
 
     const collectionBelongsToUser =
-      this.collectionsService.verifyUserCollection(user, collection);
+      await this.collectionsService.verifyUserCollection(user, collection);
 
     if (!collectionBelongsToUser) {
       return res.status(StatusCodes.BAD_REQUEST).json({
@@ -80,7 +80,7 @@ export class TaskController {
 
     const tasks = await this.tasksService.findManyByCollection(collection);
 
-    return res.status(StatusCodes.OK).json({ tasks: tasks });
+    return res.status(StatusCodes.OK).json(tasks);
   }
 
   @Post(':userId/:collectionId/task')
@@ -105,7 +105,7 @@ export class TaskController {
     }
 
     const collectionBelongsToUser =
-      this.collectionsService.verifyUserCollection(user, collection);
+      await this.collectionsService.verifyUserCollection(user, collection);
 
     if (!collectionBelongsToUser) {
       return res.status(StatusCodes.BAD_REQUEST).json({
@@ -149,7 +149,10 @@ export class TaskController {
       });
     }
 
-    const taskBelongsToUser = this.tasksService.verifyUserTask(user, task);
+    const taskBelongsToUser = await this.tasksService.verifyUserTask(
+      user,
+      task,
+    );
 
     if (!taskBelongsToUser) {
       return res.status(StatusCodes.BAD_REQUEST).json({
@@ -193,7 +196,10 @@ export class TaskController {
       });
     }
 
-    const taskBelongsToUser = this.tasksService.verifyUserTask(user, task);
+    const taskBelongsToUser = await this.tasksService.verifyUserTask(
+      user,
+      task,
+    );
 
     if (!taskBelongsToUser) {
       return res.status(StatusCodes.BAD_REQUEST).json({
@@ -209,3 +215,5 @@ export class TaskController {
       .json({ message: 'Tarefa deletada com sucesso' });
   }
 }
+
+// Falta apenas por a opção de filtrar as tarefas concluidas ou não

@@ -23,7 +23,9 @@ export class Task {
   @Column({ default: false })
   isDone: boolean;
 
-  @ManyToOne(() => Collection, (collection) => collection.tasks)
+  @ManyToOne(() => Collection, (collection) => collection.tasks, {
+    onDelete: 'CASCADE',
+  })
   collection: Collection;
 
   @ManyToOne(() => User, (user) => user.tasks)
