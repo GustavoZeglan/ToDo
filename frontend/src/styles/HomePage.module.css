@@ -1,0 +1,18 @@
+.Layout{
+    font-family: 'Poppins';
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.Content {
+    width: calc(100% - 20% - 36px);
+    display: flex;
+    top:0;
+    left: 28.5%;
+    transform: translateX(28.5%);
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;  
+}

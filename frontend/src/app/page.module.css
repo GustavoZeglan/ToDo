@@ -1,0 +1,13 @@
+.Header {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #4a4a4a;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: 'Poppins';
+    color: #fff;
+}
+
+
