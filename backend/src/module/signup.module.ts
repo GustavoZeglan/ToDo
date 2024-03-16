@@ -1,10 +1,10 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ZodValidationMiddleware } from 'src/shared/middlewares/zod-validation.middleware';
 import { SignUpController } from '../controllers/signup.controller';
 import { User } from '../models/user.entity';
 import { UsersService } from '../providers/user.service';
 import { userSchema } from '../schemas/user.schema';
+import { ZodValidationMiddleware } from './src/shared/middlewares/zod-validation.middleware';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
