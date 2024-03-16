@@ -1,8 +1,9 @@
 "use client"
 import Button from "@/components/Button";
-import { userSchema } from "@/schemas/userSchema";
+import { UserSchema } from "@/schemas/userSchema";
 import { SignupService } from "@/service/signupService";
-import { ErrorSpan, Input } from "@/styles/AuthForm.style";
+import { ErrorSpan } from "@/styles/ErrorSpan.style";
+import { Input } from "@/styles/Input.style";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -10,7 +11,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as z from 'zod';
 
-type FormProps = z.infer<typeof userSchema>;
+type FormProps = z.infer<typeof UserSchema>;
 
 export function SignUpPage() {
 
@@ -19,7 +20,7 @@ export function SignUpPage() {
     const { handleSubmit, register, formState: { errors } } = useForm<FormProps>({
         criteriaMode: 'all',
         mode: 'all',
-        resolver: zodResolver(userSchema),
+        resolver: zodResolver(UserSchema),
         defaultValues: {
             name: '',
             email: '',
@@ -29,43 +30,48 @@ export function SignUpPage() {
 
     const handleSignUp = async (data: FormProps) => {
 
-        // let errorMessage = "";
+        let errorMessage = "";
 
         try {
-        const { name, email, password } = data;
+            let status = 0;
 
-        // const response = await axios.post('http://localhost:5000/signup', { name: name, email: email, password: password })
-        // .catch((error) => {
-        //     throw new Error(error.response.data.details);
-        //   }) || null;
+            const { name, email, password } = data;
 
-        const service = new SignupService();
+            const service = new SignupService();
 
-        const response = await service.signup(name, email, password).catch((err) => {
-            throw new Error(err.details);
-        });
-
-        if (response.status == 201) {
-
-            const result = await signIn("credentials", {
-                email,
-                password,
-                redirect: false,
+            await service.signup(name, email, password).then(resp => {
+                status = resp.status;
+            }).catch((error) => {
+                status = error.status;
+                errorMessage = error.response.data.details;
+                throw new Error(error.response.data.details);
             });
 
-            if (result?.error) {
-                toast.error(result.error);
-                return;
+
+            if (status == 201) {
+
+                const result = await signIn("credentials", {
+                    email,
+                    password,
+                    redirect: false,
+                });
+
+                if (result?.error) {
+                    toast.error(result.error);
+                    return;
+                }
+
+                router.replace("/dashboard");
+
+                return
             }
 
-            router.replace("/home");
 
-            return
+        } catch (error) {
+            toast.error(String(errorMessage), { style: { fontFamily: "Poppins" } });
         }
 
-        } catch (err) {
-            toast.error(String(err));
-        }
+
 
     }
 

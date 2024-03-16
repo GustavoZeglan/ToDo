@@ -1,9 +1,9 @@
 import { DashboardContext } from "@/context/dashboardContext";
+import { Collumn, DashBoardStyle, DashboardSummary, Hi, List, Row, Text } from "@/styles/DashBoard.style";
 import { faAdd, faCaretDown, faCaretUp, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { signOut } from "next-auth/react";
 import { useContext, useState } from "react";
-import styles from "../../../styles/DashBoard.module.css";
 
 interface DashBoardProps {
     name: string,
@@ -16,36 +16,35 @@ export default function DashBoard({ name, handleModal}: DashBoardProps) {
     const [isActive, setIsActive] = useState(false);
 
     return (
-        <div className={styles.DashBoard}>
-            <h2>Olá, {name}</h2>
-            <div className={styles.Collumn}>
+        <DashBoardStyle>
+            <Hi>Olá, {name}</Hi>
+            <Collumn>
                 <div>
-                    <div style={{ backgroundColor: isActive ? "#4b4a4a" : "#2A2A2A", padding: "12px", 
-                    borderRadius: "10px", border: "1px solid #4b4a4a"}}
-                        className={styles.Row}>
+                    <Row style={{ backgroundColor: isActive ? "#4b4a4a" : "#2A2A2A", padding: "12px", 
+                    borderRadius: "10px", border: "1px solid #4b4a4a"}}>
 
                         <details style={{ width: "100%" }}>
-                            <summary style={{width:"100%", display: "flex", justifyContent:"space-between"}}
+                            <DashboardSummary style={{width:"100%", display: "flex", justifyContent:"space-between"}}
                              onClick={() => {
                                     setIsActive(!isActive ? true : false)
                                     handleCollection(null)
                                 }
-                                }>Coleções <i><FontAwesomeIcon icon={!isActive ? faCaretDown : faCaretUp} /></i> </summary>
+                                }>Coleções <i><FontAwesomeIcon icon={!isActive ? faCaretDown : faCaretUp} /></i> </DashboardSummary>
                             <ul>
                                 {
                                     collections.map((value, i) => {
-                                        return <li style={{cursor:"pointer"}} onClick={() => handleCollection(value.id)} key={i}>{value.name}</li>
+                                        return <List style={{cursor:"pointer"}} onClick={() => handleCollection(value.id)} key={i}>{value.name}</List>
                                     })
                                 }
                             </ul>
                         </details>
-                    </div>
+                    </Row>
 
                 
-                <p style={{cursor:"pointer", padding:"12px",borderRadius: "10px", border: "1px solid #4b4a4a"}} onClick={handleModal}>
+                <Text onClick={handleModal}>
                     <i><FontAwesomeIcon icon={faAdd} style={{ paddingRight: "10px", fontSize: "18px" }}/></i>
                     Criar Coleção
-                </p>
+                </Text>
 
 
                 </div>
@@ -55,8 +54,8 @@ export default function DashBoard({ name, handleModal}: DashBoardProps) {
                         icon={faRightToBracket} /></i>
                     Desconectar</p>
 
-            </div>
-        </div>
+            </Collumn>
+        </DashBoardStyle>
     )
 
 }

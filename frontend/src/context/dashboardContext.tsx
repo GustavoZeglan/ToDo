@@ -6,8 +6,10 @@ interface DashboardContextProps {
     collections: Array<Collection>,
     tasks: Array<Task>,
     collectionId: number | null,
+    taskId: number |  null,
     getCollections(arr: Array<Collection>): void,
     handleCollection: (id: number | null) => void,
+    handleTaskId: (id: number | null) => void,
     handleTasks: (arr: Array<Task>) => void,
 }
 
@@ -19,6 +21,7 @@ const DashboardProvider = ({children}: { children: React.ReactNode }) => {
     const [collections, setCollections] = useState<Array<Collection>>([]);
     const [tasks, setTasks] = useState<Array<Task>>([]);
     const [collectionId, setCollectionId] = useState<number | null>(null);
+    const [taskId, setTaskId] = useState<number | null>(null);
 
     function getCollections(arr: Array<Collection>) {
         setCollections(arr);
@@ -32,8 +35,12 @@ const DashboardProvider = ({children}: { children: React.ReactNode }) => {
         setTasks(arr);
     }
 
+    function handleTaskId(id: number | null) {
+        setTaskId(id);
+    }
+
     return (
-        <DashboardContext.Provider value={{getCollections, handleCollection, collectionId, collections, tasks, handleTasks}}>
+        <DashboardContext.Provider value={{getCollections, handleCollection, collectionId, taskId, collections, tasks, handleTasks, handleTaskId}}>
             <>{children}</>
         </DashboardContext.Provider>
     )

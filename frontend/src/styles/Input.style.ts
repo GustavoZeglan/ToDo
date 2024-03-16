@@ -1,12 +1,6 @@
 import styled from "styled-components";
 
-
-interface InputProps {
-    text: string,
-    type: string,
-}
-
-const StyledInput = styled.input`
+const Input = styled.input`
     margin-top: 12px;
     margin-bottom: 2px;
     width: 340px;
@@ -18,10 +12,11 @@ const StyledInput = styled.input`
     display: block;
     font-size: 16px;
     font-family: 'Poppins';
+
+    @media only screen and (max-width: 500px) {
+        width: 276px;
+    }
+
 `;
 
-const Input = ({text,type}: InputProps) => {
-    return <StyledInput type={type} placeholder={text}/>
-}
-
-export default Input;
+export { Input };

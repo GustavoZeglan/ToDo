@@ -37,7 +37,7 @@ export class CollectionController {
       await this.collectionsService.verifyUserCollection(user, collection);
 
     if (!collectionBelongsToUser) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
+      return res.status(StatusCodes.FORBIDDEN).json({
         error: 'Erro ao buscar coleção',
         details: 'A coleção não pertence ao usuário informado',
       });
@@ -62,7 +62,7 @@ export class CollectionController {
     return res.status(StatusCodes.OK).json(collections);
   }
 
-  @Post(':userId/collection')
+  @Post(':userId/create/collection')
   async create(@Param('userId') id: any, @Body() body, @Res() res: Response) {
     const user = await this.usersService.findOneById(id);
 
@@ -80,7 +80,6 @@ export class CollectionController {
     const collection = new Collection(
       bodyCollection.collectionName,
       bodyCollection.image,
-      bodyCollection.color,
       user,
     );
 
@@ -91,7 +90,7 @@ export class CollectionController {
       .json({ message: 'Coleção criada com sucesso' });
   }
 
-  @Put(':userId/collection/:id')
+  @Put(':userId/update/collection/:id')
   async update(@Param() param: any, @Body() body, @Res() res: Response) {
     const user = await this.usersService.findOneById(param.userId);
     const collection = await this.collectionsService.findOneById(param.id);
@@ -114,20 +113,20 @@ export class CollectionController {
       await this.collectionsService.verifyUserCollection(user, collection);
 
     if (!collectionBelongsToUser) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
+      return res.status(StatusCodes.FORBIDDEN).json({
         error: 'Erro ao buscar coleção',
         details: 'A coleção não pertence ao usuário informado',
       });
     }
 
-    const newCollection = new Collection(body.collectionName,body.image,body.color,user);
+    const newCollection = new Collection(body.collectionName,body.image,user);
 
     await this.collectionsService.update(param.id, newCollection)
 
     return res.status(StatusCodes.OK).json({message: "Coleção atualizada com sucesso"});
   }
 
-  @Delete(':userId/collection/:id')
+  @Delete(':userId/delete/collection/:id')
   async delete(@Param() param: any, @Res() res: Response) {
     const user = await this.usersService.findOneById(param.userId);
     const collection = await this.collectionsService.findOneById(param.id);
@@ -150,7 +149,7 @@ export class CollectionController {
       await this.collectionsService.verifyUserCollection(user, collection);
 
     if (!collectionBelongsToUser) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
+      return res.status(StatusCodes.FORBIDDEN).json({
         error: 'Erro ao excluir coleção',
         details: 'A coleção não pertence ao usuário informado',
       });

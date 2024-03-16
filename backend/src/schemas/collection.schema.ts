@@ -8,7 +8,4 @@ export const colleactionSchema = z.object({
     })
     .min(3, 'O Nome precisar ter no minímo 3 caracteres.'),
   image: z.string().optional(),
-  color: z.string({
-    required_error: 'A cor da coleção é obrigatório',
-  }),
 });

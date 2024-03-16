@@ -1,9 +1,11 @@
 import Modal from "@/components/Modal";
 import { DashboardContext } from "@/context/dashboardContext";
 import { getData } from "@/controllers/collection";
-import { collectionSchema } from "@/schemas/collectionSchema";
+import { CollectionSchema } from "@/schemas/collectionSchema";
 import { CollectionService } from "@/service/collectionService";
-import { BottomAlignment, CloseButton, ErrorSpan, StyledInput, SubmitButton, Title } from "@/styles/Main.style";
+import { ErrorSpan } from "@/styles/ErrorSpan.style";
+import { Input } from "@/styles/Input.style";
+import { BottomAlignment, CloseButton, SubmitButton, Title } from "@/styles/Main.style";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
@@ -17,16 +19,16 @@ interface CollectionModalProps {
     handleModal: () => void;
 }
 
-type FormProps = z.infer<typeof collectionSchema>;
+type FormProps = z.infer<typeof CollectionSchema>;
 
 export const InsertCollectionModal = ({ id, token, isOpen, handleModal }: CollectionModalProps) => {
 
-    const { getCollections, collectionId } = useContext(DashboardContext);
+    const { getCollections } = useContext(DashboardContext);
 
     const { handleSubmit, register, formState: { errors } } = useForm<FormProps>({
         criteriaMode: 'all',
         mode: 'all',
-        resolver: zodResolver(collectionSchema),
+        resolver: zodResolver(CollectionSchema),
         defaultValues: {
             collectionName: '',
             image: '',
@@ -39,7 +41,9 @@ export const InsertCollectionModal = ({ id, token, isOpen, handleModal }: Collec
 
         const service = new CollectionService();
 
-        const response = await service.insert(id, collectionName, image, token).catch((error) => {
+        const img = image ? image : "";
+
+        const response = await service.insert(id, collectionName, img, token).catch((error) => {
             throw new Error(error);
         });
 
@@ -60,11 +64,11 @@ export const InsertCollectionModal = ({ id, token, isOpen, handleModal }: Collec
             <Modal isOpen={isOpen}>
                 <Title>Cadastrar Coleção</Title>
                 <form onSubmit={handleSubmit(addCollection)}>
-                    <StyledInput  {...register('collectionName')} placeholder="Nome:" />
+                    <Input  {...register('collectionName')} placeholder="Nome:" />
                     {errors.collectionName?.message && (
                         <ErrorSpan>{errors.collectionName?.message}</ErrorSpan>
                     )}
-                    <StyledInput style={{ marginBottom: "16px" }} {...register('image')} placeholder="Imagem:" />
+                    <Input style={{ marginBottom: "16px" }} {...register('image')} placeholder="Imagem:" />
 
                     <BottomAlignment>
                         <SubmitButton type="submit">Adicionar</SubmitButton>

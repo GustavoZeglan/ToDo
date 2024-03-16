@@ -1,11 +1,10 @@
+import { isValidURL } from "@/utils/urlValidator";
 import styled from "styled-components";
-
 
 interface CollectionProps {
     id: number,
     name: string,
     image: string,
-    color: string,
     onClick: () => void
 }
 
@@ -35,10 +34,14 @@ const Div = styled.img`
 const Paragraph = styled.p`
     padding-left: 10px;
 `;
-export default function CollectionCard({ id, name, image, color, onClick }: CollectionProps) {
+
+export default function CollectionCard({ id, name, image, onClick }: CollectionProps) {
+
+    const img = isValidURL(image) ? image : "/ian-dooley-DJ7bWa-Gwks-unsplash.jpg";
+
     return (
         <Card onClick={onClick}>
-            <Div src={'/ian-dooley-DJ7bWa-Gwks-unsplash.jpg'} alt={""} />
+            <Div src={img} alt={""} />
             <Paragraph>{name}</Paragraph>
         </Card>
     )

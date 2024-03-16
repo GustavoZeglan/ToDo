@@ -2,6 +2,8 @@ import axios from "axios";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+const url = process.env.NEXT_PUBLIC_BACKEND_URL + "/login";
+
 export const nextAuthOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
@@ -12,7 +14,7 @@ export const nextAuthOptions: NextAuthOptions = {
             },
             async authorize(credentials, req) {
 
-                return axios.post('http://localhost:5000/login', { email: credentials?.email, password: credentials?.password })
+                return axios.post(url, { email: credentials?.email, password: credentials?.password })
                   .then((response) => {
                     return response.data;
                   })

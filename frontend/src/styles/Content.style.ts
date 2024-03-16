@@ -4,9 +4,39 @@ const Div = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin: 36px auto;
-    width: 80%;
-    height: 100%;
+    align-items: center;
+    width: 100%;
+    
+
+    @media only screen and (max-width: 500px) {
+        margin-top: 40px;
+        justify-content: center;
+    }
+
+    @media only screen and (max-width: 900px) {
+        justify-content: center;
+    }
+
+`;
+
+const FloatingButton = styled.div`
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 50%;
+    color: #fff;
+    background-color: #1f69c4;
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    display: none;
+    cursor: pointer;
+
+    @media only screen and (max-width: 500px) {
+        display: block;
+    }
+
 `;
 
 const Collumn = styled.div`
@@ -16,11 +46,22 @@ const Collumn = styled.div`
     flex-direction: column;
     align-items: center;
     margin: 36px auto;
+
+    @media only screen and (max-width: 500px) {
+        width: 100%;
+        margin: 16px;
+    }
+
 `;
 
 const ImageBox = styled.div`
     width: 60%;
     height: 244px;
+
+    @media only screen and (max-width: 500px) {
+        width: 100%;
+    }
+
 `;
 
 const Image = styled.img`
@@ -41,6 +82,15 @@ const UpdateButton = styled.button`
     font-family: 'Poppins';
     font-size: 16px;
     cursor: pointer;
+    &:hover {
+        background-color: #1e518f;
+    }
+
+    @media only screen and (max-width: 500px) {
+        width: 100%;
+        display: block;
+    }
+
 `;
 
 const DeleteButton = styled.button`
@@ -53,6 +103,15 @@ const DeleteButton = styled.button`
     font-family: 'Poppins';
     font-size: 16px;
     cursor: pointer;
+    &:hover {
+        background-color: #a63737;
+    }
+
+    @media only screen and (max-width: 500px) {
+        width: 100%;
+        display: block;
+    }
+
 `;
 
 const BottomAlignment = styled.div`
@@ -60,11 +119,29 @@ const BottomAlignment = styled.div`
     flex-direction: row;
     justify-content: flex-end;
     padding-top: 24px;
+
+    @media only screen and (max-width: 500px) {
+        flex-direction: column;
+    }
+
 `;
 
 const Title = styled.h1`
     text-align: center;
 `;
 
-export { BottomAlignment, Collumn, DeleteButton, Div, Image, ImageBox, Title, UpdateButton };
+const Arrow = styled.p`
+    font-size: 32px;
+    color: #4a4a4a;
+    display: none;
+    align-self: flex-start;
+
+    @media only screen and (max-width: 500px) {
+        display: block;
+    }
+
+`;
+
+
+export { Arrow, BottomAlignment, Collumn, DeleteButton, Div, FloatingButton, Image, ImageBox, Title, UpdateButton };
 

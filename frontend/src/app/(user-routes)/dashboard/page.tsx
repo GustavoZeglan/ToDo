@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "../../lib/auth";
 import Main from "./main";
 
-export default async function HomePage() {
+export default async function DashboardPage() {
 
     const session = await getServerSession(nextAuthOptions)
 

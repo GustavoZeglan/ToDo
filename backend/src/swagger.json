@@ -1,0 +1,478 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de gerenciamento de tarefas"
+    },
+    "contact": {
+        "email": "lgzeglan@gmail.com"
+    },
+    "tags": [
+        {
+            "name": "User",
+            "description": "Todas as rotas de User"
+        },
+        {
+            "name": "Collection",
+            "description": "Todas as rotas de Coleção"
+        },
+        {
+            "name": "Task",
+            "description": "Todas as rotas de Tarefas"
+        }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "description": "Verifica se o usuário já está cadastrado na base de dados e retona um token de autenticação.",
+                "summary": "Efetua o login de um usuário.",
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/signup": {
+            "post": {
+                "description": "Cadastra um usuário na base de dados.",
+                "summary": "Efetua o cadastro de um usuário.",
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário cadastrado."
+                    },
+                    "400": {
+                        "description": "Email já cadastrado"
+                    }
+                }
+            }
+        },
+        "/{userId}/create/collection": {
+            "post": {
+                "description": "Insere uma coleção no banco de dados.",
+                "summary": "Insere uma coleção.",
+                "tags": [
+                    "Collection"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Id referente ao usuário",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "CollectionName": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Coleção inserida."
+                    },
+                    "400": {
+                        "description": "Usuário informado não cadastrado"
+                    }
+                }
+            }
+        },
+        "/{userId}/update/collection/{collectionId}": {
+            "put": {
+                "description": "Atualiza uma coleção do banco de dados.",
+                "summary": "Atualiza uma coleção.",
+                "tags": [
+                    "Collection"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Id referente ao usuário",
+                        "required": true
+                    },
+                    {
+                        "name": "collectionId",
+                        "in": "path",
+                        "description": "Id referente a coleção",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "CollectionName": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Coleção atualizada."
+                    },
+                    "400": {
+                        "description": "Usuário ou coleção não existe."
+                    },
+                    "403": {
+                        "description": "A coleção não pertence ao usuário informado"
+                    }
+                }
+            }
+        },
+        "/{userId}/delete/collection/{collectionId}": {
+            "delete": {
+                "description": "Remove uma coleção do banco de dados.",
+                "summary": "Remove uma coleção.",
+                "tags": [
+                    "Collection"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Id referente ao usuário",
+                        "required": true
+                    },
+                    {
+                        "name": "collectionId",
+                        "in": "path",
+                        "description": "Id referente a coleção",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Coleção atualizada."
+                    },
+                    "400": {
+                        "description": "Usuário ou coleção não existe."
+                    },
+                    "403": {
+                        "description": "A coleção não pertence ao usuário informado"
+                    }
+                }
+            }
+        },
+        "/{userId}/collection/{collectionId}": {
+            "get": {
+                "description": "Retorna uma coleção do banco de dados.",
+                "summary": "Retorna uma coleção.",
+                "tags": [
+                    "Collection"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Id referente ao usuário",
+                        "required": true
+                    },
+                    {
+                        "name": "collectionId",
+                        "in": "path",
+                        "description": "Id referente a coleção",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Coleção retornada."
+                    },
+                    "400": {
+                        "description": "Usuário ou coleção não existe."
+                    },
+                    "403": {
+                        "description": "A coleção não pertence ao usuário informado"
+                    }
+                }
+            }
+        },
+        "/{userId}/collection": {
+            "get": {
+                "description": "Retorna as coleçãoes pertencentem ao usuário informado.",
+                "summary": "Retorna todas as coleções pertencentes ao usuário.",
+                "tags": [
+                    "Collection"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Id referente ao usuário",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Coleções retornadas."
+                    },
+                    "400": {
+                        "description": "Usuário informado não existe."
+                    }
+                }
+            }
+        },
+        "/{userId}/{collectionId}/create/task": {
+            "post": {
+                "description": "Insere uma tarefa no banco de dados.",
+                "summary": "Insere uma tarefa.",
+                "tags": [
+                    "Task"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Id referente ao usuário",
+                        "required": true
+                    },
+                    {
+                        "name": "collectionId",
+                        "in": "path",
+                        "description": "Id referente a coleção",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tarefa inserida."
+                    },
+                    "400": {
+                        "description": "Usuário ou coleção não existem"
+                    },
+                    "403": {
+                        "description": "A coleção informada não pertence ao usuário"
+                    }
+                }
+            }
+        },
+        "/{userId}/update/task/{taskId}": {
+            "put": {
+                "description": "Atualiza uma tarefa.",
+                "summary": "Atualiza uma tarefa.",
+                "tags": [
+                    "Task"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Id referente ao usuário",
+                        "required": true
+                    },
+                    {
+                        "name": "taskId",
+                        "in": "path",
+                        "description": "Id referente a tarefa",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "isDone": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tarefa inserida."
+                    },
+                    "400": {
+                        "description": "Usuário ou coleção não existem"
+                    },
+                    "403": {
+                        "description": "A tarefa informada não pertence ao usuário"
+                    }
+                }
+            }
+        },
+        "/{userId}/delete/task/{taskId}": {
+            "delete": {
+                "description": "Remove uma tarefa do banco de dados.",
+                "summary": "Remove uma tarefa.",
+                "tags": [
+                    "Task"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Id referente ao usuário",
+                        "required": true
+                    },
+                    {
+                        "name": "taskId",
+                        "in": "path",
+                        "description": "Id referente a tarefa",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Tarefa inserida."
+                    },
+                    "400": {
+                        "description": "Usuário ou coleção não existem"
+                    },
+                    "403": {
+                        "description": "A tarefa informada não pertence ao usuário"
+                    }
+                }
+            }
+        },
+        "/{userId}/${collectionId}/task/": {
+            "get": {
+                "description": "Retorna todas as tarefas pertencentes a uma coleção.",
+                "summary": "Retorna todas as tarefas de uma coleção.",
+                "tags": [
+                    "Task"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Id referente ao usuário",
+                        "required": true
+                    },
+                    {
+                        "name": "collectionId",
+                        "in": "path",
+                        "description": "Id referente a coleção",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Todas as tarefas da coleção foram retornadas."
+                    },
+                    "400": {
+                        "description": "Usuário ou coleção não existem"
+                    }
+                }
+            }
+        },
+        "/{userId}/task/{$taskId}": {
+            "get": {
+                "description": "Retorna uma tarefa do banco de dados.",
+                "summary": "Retorna uma tarefa.",
+                "tags": [
+                    "Task"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Id referente ao usuário",
+                        "required": true
+                    },
+                    {
+                        "name": "taskId",
+                        "in": "path",
+                        "description": "Id referente a tarefa",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tarefa retornada."
+                    },
+                    "400": {
+                        "description": "Usuário ou tarefa não existe."
+                    },
+                    "403": {
+                        "description": "A tarefa não pertence ao usuário informado."
+                    }
+                }
+            }
+        }
+    }
+}

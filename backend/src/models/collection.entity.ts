@@ -5,10 +5,9 @@ import { User } from './user.entity';
 
 @Entity()
 export class Collection {
-  constructor(name: string, image: string, color: string, user: User) {
+  constructor(name: string, image: string, user: User) {
     this.name = name;
     this.image = image;
-    this.color = color;
     this.user = user;
   }
 
@@ -20,9 +19,6 @@ export class Collection {
 
   @Column()
   image: string;
-
-  @Column()
-  color: string;
 
   @OneToMany(() => Task, (task) => task.collection, {
     cascade: true,

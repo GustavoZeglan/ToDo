@@ -1,5 +1,5 @@
 import { Global, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import * as cors from 'cors';
+import cors from 'cors';
 import { CollectionModule } from './module/collection.module';
 import { DatabaseModule } from './module/database.module';
 import { LoginModule } from './module/login.module';
@@ -23,7 +23,7 @@ export class AppModule implements NestModule {
     consumer
       .apply(
         cors({
-          origin: 'http://localhost:3000', // URL do seu front-end Next.js
+          origin: process.env.FRONTEND_URL,
         }),
       )
       .forRoutes('*');

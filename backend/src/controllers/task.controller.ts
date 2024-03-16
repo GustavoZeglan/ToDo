@@ -83,7 +83,7 @@ export class TaskController {
     return res.status(StatusCodes.OK).json(tasks);
   }
 
-  @Post(':userId/:collectionId/task')
+  @Post(':userId/:collectionId/create/task')
   async create(@Param() param: any, @Body() body: any, @Res() res: Response) {
     const user = await this.usersService.findOneById(param.userId);
     const collection = await this.collectionsService.findOneById(
@@ -108,7 +108,7 @@ export class TaskController {
       await this.collectionsService.verifyUserCollection(user, collection);
 
     if (!collectionBelongsToUser) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
+      return res.status(StatusCodes.FORBIDDEN).json({
         error: 'Erro ao criar tarefa',
         details: 'A coleção não pertence ao usuário informado',
       });
@@ -130,7 +130,7 @@ export class TaskController {
       .json({ message: 'Tarefa criada com sucesso' });
   }
 
-  @Put(':userId/task/:id')
+  @Put(':userId/update/task/:id')
   async update(@Param() param: any, @Body() body: any, @Res() res: Response) {
     const user = await this.usersService.findOneById(param.userId);
     const task = await this.tasksService.findOneById(param.id);
@@ -155,7 +155,7 @@ export class TaskController {
     );
 
     if (!taskBelongsToUser) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
+      return res.status(StatusCodes.FORBIDDEN).json({
         error: 'Erro ao atualizar tarefa',
         details: 'A tarefa não pertence ao usuário informado',
       });
@@ -177,7 +177,7 @@ export class TaskController {
       .json({ message: 'Tarefa atualizada com sucesso' });
   }
 
-  @Delete(':userId/task/:id')
+  @Delete(':userId/delete/task/:id')
   async delete(@Param() param: any, @Res() res: Response) {
     const user = await this.usersService.findOneById(param.userId);
     const task = await this.tasksService.findOneById(param.id);
@@ -202,7 +202,7 @@ export class TaskController {
     );
 
     if (!taskBelongsToUser) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
+      return res.status(StatusCodes.FORBIDDEN).json({
         error: 'Erro ao deletar tarefa',
         details: 'A tarefa não pertence ao usuário informado',
       });
@@ -215,5 +215,3 @@ export class TaskController {
       .json({ message: 'Tarefa deletada com sucesso' });
   }
 }
-
-// Falta apenas por a opção de filtrar as tarefas concluidas ou não

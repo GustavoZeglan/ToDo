@@ -1,7 +1,8 @@
 "use client"
 import Button from "@/components/Button";
-import { userSchema } from "@/schemas/userSchema";
-import { ErrorSpan, Input } from "@/styles/AuthForm.style";
+import { UserSchema } from "@/schemas/userSchema";
+import { ErrorSpan } from "@/styles/ErrorSpan.style";
+import { Input } from "@/styles/Input.style";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -10,7 +11,7 @@ import toast from "react-hot-toast";
 import * as z from 'zod';
 
 
-const formType = userSchema.omit({name:true});
+const formType = UserSchema.omit({name:true});
 
 type LoginFormProps = z.infer<typeof formType>;
 
@@ -40,11 +41,11 @@ export function LoginPage() {
         });
 
         if (result?.error) {
-            toast.error(result.error);
+            toast.error(result.error, {style:{fontFamily: "Poppins"}});
             return;
         }
         
-        router.replace("/home");
+        router.replace("/dashboard");
     }
 
     return (

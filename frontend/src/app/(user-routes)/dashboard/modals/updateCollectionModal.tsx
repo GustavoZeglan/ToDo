@@ -1,8 +1,10 @@
 import Modal from "@/components/Modal";
 import { DashboardContext } from "@/context/dashboardContext";
 import { getData, updateCollection } from "@/controllers/collection";
-import { collectionSchema } from "@/schemas/collectionSchema";
-import { BottomAlignment, CloseButton, ErrorSpan, StyledInput, SubmitButton, Title } from "@/styles/Main.style";
+import { CollectionSchema } from "@/schemas/collectionSchema";
+import { ErrorSpan } from "@/styles/ErrorSpan.style";
+import { Input } from "@/styles/Input.style";
+import { BottomAlignment, CloseButton, SubmitButton, Title } from "@/styles/Main.style";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
@@ -16,7 +18,7 @@ interface CollectionModalProps {
     handleModal: () => void;
 }
 
-type FormProps = z.infer<typeof collectionSchema>;
+type FormProps = z.infer<typeof CollectionSchema>;
 
 export const UpdateCollectionModal = ({id, token, isOpen, handleModal}: CollectionModalProps) => {
 
@@ -25,7 +27,7 @@ export const UpdateCollectionModal = ({id, token, isOpen, handleModal}: Collecti
     const { handleSubmit, register, formState: { errors } } = useForm<FormProps>({
         criteriaMode: 'all',
         mode: 'all',
-        resolver: zodResolver(collectionSchema),
+        resolver: zodResolver(CollectionSchema),
         defaultValues: {
             collectionName: '',
             image: '',
@@ -37,7 +39,9 @@ export const UpdateCollectionModal = ({id, token, isOpen, handleModal}: Collecti
 
         if (collectionId != null ) {
 
-            const resp = await updateCollection(id, collectionId, collectionName, image, token); 
+            const img = image ?? "";
+
+            const resp = await updateCollection(id, collectionId, collectionName, img, token); 
 
             if (resp.status != 401) {
                 toast.success(resp.message, {style:{fontFamily:"Poppins"}});
@@ -57,14 +61,14 @@ export const UpdateCollectionModal = ({id, token, isOpen, handleModal}: Collecti
             <Modal isOpen={isOpen}>
                 <Title>Editar Coleção</Title>
                 <form onSubmit={handleSubmit(update)}>
-                    <StyledInput  {...register('collectionName')} placeholder="Nome:" />
+                    <Input  {...register('collectionName')} placeholder="Nome:" />
                     {errors.collectionName?.message && (
                         <ErrorSpan>{errors.collectionName?.message}</ErrorSpan>
                     )}
-                    <StyledInput style={{ marginBottom: "16px" }} {...register('image')} placeholder="Imagem:" />
+                    <Input style={{ marginBottom: "16px" }} {...register('image')} placeholder="Imagem:" />
 
                     <BottomAlignment>
-                        <SubmitButton>Adicionar</SubmitButton>
+                        <SubmitButton>Editar</SubmitButton>
                         <CloseButton onClick={handleModal}>Fechar</CloseButton>
                     </BottomAlignment>
                 </form>
