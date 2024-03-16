@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoginController } from '../controllers/login.controller';
 import { User } from '../models/user.entity';
 import { userSchema } from '../schemas/user.schema';
-import { ZodValidationMiddleware } from './src/shared/middlewares/zod-validation.middleware';
+import { ZodValidationMiddleware } from '../shared/middlewares/zod-validation.middleware';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],

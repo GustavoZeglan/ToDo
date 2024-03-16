@@ -6,8 +6,8 @@ import { Collection } from '../models/collection.entity';
 import { CollectionsService } from '../providers/collection.service';
 import { UsersService } from '../providers/user.service';
 import { colleactionSchema } from '../schemas/collection.schema';
-import { authenticationMiddleware } from './src/shared/middlewares/authentication.middleware';
-import { ZodValidationMiddleware } from './src/shared/middlewares/zod-validation.middleware';
+import { authenticationMiddleware } from '../shared/middlewares/authentication.middleware';
+import { ZodValidationMiddleware } from '../shared/middlewares/zod-validation.middleware';
 import { UserModule } from './user.module';
 
 @Module({
