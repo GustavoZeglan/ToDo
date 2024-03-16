@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { compare } from 'bcrypt';
 import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { createToken } from 'src/shared/utils/createToken';
 import { Repository } from 'typeorm';
 import { User } from '../models/user.entity';
+import { createToken } from '../shared/utils/createToken';
 
 @Controller('login')
 export class LoginController {
