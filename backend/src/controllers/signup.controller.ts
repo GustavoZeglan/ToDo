@@ -1,10 +1,10 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { passwordGenerator } from 'src/shared/utils/passwordGenerator';
 import { User } from '../models/user.entity';
 import { UsersService } from '../providers/user.service';
 import { userSchema } from '../schemas/user.schema';
-import { passwordGenerator } from '../shared/utils/passwordGenerator';
 
 @Controller('signup')
 export class SignUpController {

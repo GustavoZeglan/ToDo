@@ -1,14 +1,14 @@
 // eslint-disable-next-line prettier/prettier
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { authenticationMiddleware } from 'src/shared/middlewares/authentication.middleware';
+import { ZodValidationMiddleware } from 'src/shared/middlewares/zod-validation.middleware';
 import { TaskController } from '../controllers/task.controller';
 import { Task } from '../models/task.entity';
 import { CollectionsService } from '../providers/collection.service';
 import { TasksService } from '../providers/task.service';
 import { UsersService } from '../providers/user.service';
 import { TaskSchema } from '../schemas/task.schema';
-import { authenticationMiddleware } from '../shared/middlewares/authentication.middleware';
-import { ZodValidationMiddleware } from '../shared/middlewares/zod-validation.middleware';
 import { CollectionModule } from './collection.module';
 import { UserModule } from './user.module';
 

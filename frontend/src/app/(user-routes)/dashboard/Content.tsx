@@ -20,7 +20,7 @@ interface ContentProps {
     handleAddCollectionModal: () => void,
 }
 
-export default function Content({ id, token, handleUpdateModal, 
+export default function Content({ id, token, handleUpdateModal,
     handleAddTaskModal, handleUpdateTaskModal, handleAddCollectionModal }: ContentProps) {
 
     const { collections, collectionId, getCollections, handleCollection, tasks, handleTasks } = useContext(DashboardContext);
@@ -61,7 +61,7 @@ export default function Content({ id, token, handleUpdateModal,
                     handleCollection(value.id)
                 }
                 } key={i} name={value.name}
-                    image={value.image} id={value.id}/>
+                    image={value.image} id={value.id} />
             })}
             <FloatingButton onClick={handleAddCollectionModal}>
                 <p><i><FontAwesomeIcon icon={faAdd} /></i></p>
@@ -92,12 +92,12 @@ export default function Content({ id, token, handleUpdateModal,
                         <Image src={img} />
                     </ImageBox>
                     <Title>{collection.name}</Title>
-                    
+
                     {
                         tasks.map((value) => {
                             return (
                                 <TaskDetails key={value.id} id={id} taskId={value.id} token={token} handleModal={handleUpdateTaskModal}
-                                    name={value.name} description={value.description} isDone={value.isDone}/>
+                                    name={value.name} description={value.description} isDone={value.isDone} />
                             )
                         })
                     }
