@@ -5,6 +5,8 @@ Um simples gerenciador de tarefas.
 
 ## Screenshots
 
+<img src="frontend/public/Projeto.png" width="550">
+
 ## Rodando localmente
 
 Clone o projeto
